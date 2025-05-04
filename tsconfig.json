@@ -1,25 +1,27 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
     "module": "ESNext",
     "declaration": true,
-    "declarationDir": "dist",
-    "emitDeclarationOnly": false,
-    "jsx": "react-jsx",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
     "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "moduleResolution": "node",
     "paths": {
-      "@commons/*": ["src/commons/*"],
-      "@services/*": ["src/services/*"],
+      "@src/*": ["src/*"],
       "@usecases/*": ["src/usecases/*"],
+      "@services/*": ["src/services/*"]
     }
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  }
 }

@@ -1,50 +1,31 @@
-import tsconfigPaths from 'rollup-plugin-tsconfig-paths';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
-import postcss from 'rollup-plugin-postcss';
-import terser from '@rollup/plugin-terser';
-import pkg from './package.json' assert { type: 'json' };
-import json from '@rollup/plugin-json';
+// rollup.config.js
+const tsconfigPaths = require('rollup-plugin-tsconfig-paths');
+const resolve = require('@rollup/plugin-node-resolve').default;
+const commonjs = require('@rollup/plugin-commonjs');
+const typescript = require('rollup-plugin-typescript2');
+const pkg = require('./package.json');
 
-export default {
+module.exports = {
   input: 'src/index.ts',
-  output: [
-    { file: pkg.main, format: 'cjs', sourcemap: true },
-    { file: pkg.module, format: 'es', sourcemap: true },
-  ],
+  output: {
+    file: pkg.main,
+    format: 'cjs',
+    sourcemap: true,
+  },
   external: [
     ...Object.keys(pkg.peerDependencies || {}),
     ...Object.keys(pkg.dependencies || {}),
   ],
-  onwarn(warning, warn) {
-    // Ignore "use client" warnings
-    if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('"use client"')) {
-      return;
-    }
-    warn(warning);
-  },
   plugins: [
-    json(),
     tsconfigPaths(),
-    resolve({
-      extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
-    }),
+    resolve({ extensions: ['.ts', '.js', '.json'] }),
     commonjs(),
-    postcss({
-      extract: true,
-      minimize: {
-        preset: ['default', { discardComments: { removeAll: true } }],
-      },
-      modules: false,
-      use: [
-        ['sass', { includePaths: ['./src', './node_modules'] }],
-      ],
-    }),
-    typescript({ tsconfig: './tsconfig.json' }),
-    terser({
-      format: {
-        comments: false,
+    typescript({
+      tsconfig: './tsconfig.json',
+      tsconfigOverride: {
+        compilerOptions: {
+          moduleResolution: 'node',
+        },
       },
     }),
   ],

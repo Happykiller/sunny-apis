@@ -2,9 +2,7 @@
   "name": "@happykiller/sunny-apis",
   "version": "0.2.0",
   "description": "Library front",
-  "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

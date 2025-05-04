@@ -11,3 +11,6 @@ export { MorgansServiceReal } from './services/morgans/morgans.service.real';
 export { MorgansServiceFake } from './services/morgans/morgans.service.fake';
 export { ServiceMorgansServiceModel } from './services/morgans/model/send.morgans.service.model';
 export { WelcomeSendMorgansServiceDto, SendMorgansServiceDto } from './services/morgans/dto/send.morgans.service.dto';
+
+export { LoggerService } from './services/logger/logger.service';
+export { LoggerServiceFake } from './services/logger/logger.service.fake';
