@@ -1,0 +1,35 @@
+{
+  "name": "@happykiller/sunny-apis",
+  "version": "0.1.0",
+  "description": "Library front",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rm -rf dist",
+    "build:link": "npm run clean && npm run build && npm link",
+    "release:patch": "npm run clean && npm run build && npm version patch && npm publish --access public",
+    "release:minor": "npm run clean && npm run build && npm version minor && npm publish --access public",
+    "release:major": "npm run clean && npm run build && npm version major && npm publish --access public"
+  },
+  "author": "fabrice.rosito@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/node": "^22.15.3",
+    "rollup": "^4.40.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-tsconfig-paths": "^1.5.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {}
+}
