@@ -14,3 +14,18 @@ export { WelcomeSendMorgansServiceDto, SendMorgansServiceDto } from './services/
 
 export { LoggerService } from './services/logger/logger.service';
 export { LoggerServiceFake } from './services/logger/logger.service.fake';
+
+/**
+ * Graphql
+ */
+export * from './graphql/test/test.module';
+export * from './graphql/test/test.resolver';
+export * from './graphql/test/dto/ping-response.dto';
+export * from './graphql/auth/auth.module';
+export * from './graphql/guard/userSession.decorator';
+export * from './graphql/guard/guard.module';
+//export * from './graphql/guard/gql.auth.guard';
+//export * from './graphql/guard/custom.auth.guard';
+//export * from './graphql/guard/roles.guard';
+//export * from './graphql/guard/roles.decorator';
+export * from './graphql/guard/userRole';
