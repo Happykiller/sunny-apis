@@ -27,6 +27,7 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
     private appConfig: any,
   ) {
     super();
+    console.log('GqlAuthGuard')
   }
 
   /* istanbul ignore next */

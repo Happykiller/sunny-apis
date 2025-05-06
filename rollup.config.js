@@ -12,10 +12,15 @@ module.exports = {
     format: 'cjs',
     sourcemap: true,
   },
-  external: [
-    ...Object.keys(pkg.peerDependencies || {}),
-    ...Object.keys(pkg.dependencies || {}),
-  ],
+  external: (id) => {
+    // Exclure toutes les deps et peerDeps (même si elles sont nestées ou scopées)
+    const externals = [
+      ...Object.keys(pkg.dependencies || {}),
+      ...Object.keys(pkg.peerDependencies || {}),
+    ];
+  
+    return externals.some(name => id === name || id.startsWith(`${name}/`));
+  },
   plugins: [
     tsconfigPaths(),
     resolve({ extensions: ['.ts', '.js', '.json'] }),
