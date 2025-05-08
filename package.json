@@ -13,9 +13,9 @@
     "check:externals": "node scripts/check-externals.js",
     "build:link": "npm run exports:generate && npm run clean && npm run build && npm link",
     "exports:generate": "ts-node --project tsconfig.scripts.json scripts/generate-exports.ts",
-    "release:patch": "npm run exports:generate && npm run clean && npm run build && npm version patch && npm publish --access public",
-    "release:minor": "npm run exports:generate && npm run clean && npm run build && npm version minor && npm publish --access public",
-    "release:major": "npm run exports:generate && npm run clean && npm run build && npm version major && npm publish --access public"
+    "release:patch": "npm run clean && npm run build && npm version patch && npm publish --access public",
+    "release:minor": "npm run clean && npm run build && npm version minor && npm publish --access public",
+    "release:major": "npm run clean && npm run build && npm version major && npm publish --access public"
   },
   "author": "fabrice.rosito@gmail.com",
   "license": "ISC",
