@@ -1,14 +1,15 @@
+
+// src\usecases\auth\auth.usecase.spec.ts
 import { describe, expect, it } from '@jest/globals';
 import { mock, MockProxy } from 'jest-mock-extended';
 
-import { Inversify } from '@src/inversify/investify';
-import { AuthUsecase } from '@usecase/auth/auth.usecase';
-import { USER_ROLE } from '@presentation/guard/userRole';
-import { CryptService } from '@service/crypt/crypt.service';
-import { GetUserUsecase } from '@usecase/user/get.user.usecase';
+import { USER_ROLE } from '@graphql/guard/userRole';
+import { AuthUsecase } from '@usecases/auth/auth.usecase';
+import { CryptService } from '@services/crypt/crypt.service';
+import { GetUserUsecase } from '@usecases/user/get.user.usecase';
 
 describe('AuthUsecase', () => {
-  const mockInversify: MockProxy<Inversify> = mock<Inversify>();
+  const mockInversify: MockProxy<any> = mock<any>();
   const mockGetUserUsecase: MockProxy<GetUserUsecase> = mock<GetUserUsecase>();
   const mockCryptService: MockProxy<CryptService> = mock<CryptService>();
 

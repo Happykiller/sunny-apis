@@ -1,7 +1,8 @@
+// src\services\password\password.service.real.spec.ts
 import { describe, expect, it } from '@jest/globals';
 
-import { PasswordService } from '@service/password/password.service';
-import { PasswordServiceReal } from '@service/password/password.service.real';
+import { PasswordService } from '@services/password/password.service';
+import { PasswordServiceReal } from '@services/password/password.service.real';
 
 describe('PasswordServiceReal', () => {
   const service: PasswordService = new PasswordServiceReal();

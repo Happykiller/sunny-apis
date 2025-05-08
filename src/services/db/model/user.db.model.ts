@@ -9,5 +9,4 @@ export interface UserDbModel {
   mail: string;
   role: string;
   active: boolean;
-  private_trainings?: string[];
 }

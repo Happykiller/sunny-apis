@@ -17,6 +17,7 @@
     "baseUrl": "./",
     "paths": {
       "@src/*": ["src/*"],
+      "@graphql/*": ["src/graphql/*"],
       "@usecases/*": ["src/usecases/*"],
       "@services/*": ["src/services/*"]
     },
@@ -28,5 +29,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["**/*.spec.ts", "**/*.e2e-spec.ts", "node_modules", "dist"]
 }

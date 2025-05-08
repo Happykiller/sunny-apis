@@ -23,7 +23,7 @@ export class CreateUserUsecase {
       throw new Error(ERRORS.CREATE_USER_USECASE_USER_ALREADY_EXIST);
     }
 
-    this.inversify.morgansServce.sendWelcome({
+    this.inversify.morgansService.sendWelcome({
       to: dto.mail,
       subject: 'Bienvenue sur Vergo 🎉',
       variables: {

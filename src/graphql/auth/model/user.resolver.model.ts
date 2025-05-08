@@ -9,5 +9,4 @@ export interface UserResolverModel {
   mail: string;
   role: string;
   active: boolean;
-  private_trainings?: string[];
 }

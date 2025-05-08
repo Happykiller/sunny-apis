@@ -3,7 +3,7 @@ import path from 'path';
 
 const SRC_DIR = path.resolve('src');
 const INDEX_FILE = path.resolve('src/index.ts');
-const IGNORE = ['index.ts', '.spec.ts', '.test.ts', '.d.ts'];
+const IGNORE = ['index.ts', '.spec.ts', '.e2e-spec.ts', '.test.ts', '.d.ts'];
 
 async function walk(dir: string): Promise<string[]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });

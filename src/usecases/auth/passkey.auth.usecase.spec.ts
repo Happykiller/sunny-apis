@@ -1,18 +1,18 @@
+// src\usecases\auth\passkey.auth.usecase.spec.ts
+import { LoggerService } from '@nestjs/common';
 import { describe, expect, it } from '@jest/globals';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 import { ERRORS } from '@src/common/ERROR';
-import { BddService } from '@service/db/db.service';
-import { Inversify } from '@src/inversify/investify';
-import { USER_ROLE } from '@presentation/guard/userRole';
-import { LoggerService } from '@service/logger/logger.service';
-import { GetUserUsecase } from '@usecase/user/get.user.usecase';
-import { AuthPasskeyUsecase } from '@usecase/auth/passkey.auth.usecase';
-import { PasswordLessService } from '@service/passwordless/passwordless.service';
+import { USER_ROLE } from '@graphql/guard/userRole';
+import { BddServiceBase } from '@services/db/db.service.base';
+import { GetUserUsecase } from '@usecases/user/get.user.usecase';
+import { AuthPasskeyUsecase } from '@usecases/auth/passkey.auth.usecase';
+import { PasswordLessService } from '@services/passwordless/passwordless.service';
 
 describe('AuthPasskeyUsecase', () => {
-  const mockInversify: MockProxy<Inversify> = mock<Inversify>();
-  const mockBddService: MockProxy<BddService> = mock<BddService>();
+  const mockInversify: MockProxy<any> = mock<any>();
+  const mockBddService: MockProxy<BddServiceBase> = mock<BddServiceBase>();
   const mockLoggerService: MockProxy<LoggerService> = mock<LoggerService>();
   const mockGetUserUsecase: MockProxy<GetUserUsecase> = mock<GetUserUsecase>();
   const mockPasswordLessService: MockProxy<PasswordLessService> = mock<PasswordLessService>();

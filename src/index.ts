@@ -40,6 +40,7 @@ export * from './graphql/user/user.resolver';
 export * from './services/crypt/crypt.service';
 export * from './services/crypt/crypt.service.real';
 export * from './services/crypt/dto/crypt.service.dto';
+export * from './services/db/db.service.base';
 export * from './services/db/dto/create.passkey.db.dto';
 export * from './services/db/dto/create.user.db.dto';
 export * from './services/db/dto/delete.passkey.db.dto';

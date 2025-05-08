@@ -1,14 +1,14 @@
+// src\usecases\user\get_all.user.usecase.spec.ts
 import { describe, expect, it } from '@jest/globals';
 import { mock, MockProxy } from 'jest-mock-extended';
 
-import { BddService } from '@service/db/db.service';
-import { Inversify } from '@src/inversify/investify';
-import { USER_ROLE } from '@presentation/guard/userRole';
-import { GetAllUserUsecase } from '@usecase/user/get_all.user.usecase';
+import { USER_ROLE } from '@graphql/guard/userRole';
+import { BddServiceBase } from '@services/db/db.service.base';
+import { GetAllUserUsecase } from '@usecases/user/get_all.user.usecase';
 
 describe('GetAllUserUsecase', () => {
-  const mockInversify: MockProxy<Inversify> = mock<Inversify>();
-  const mockBddService: MockProxy<BddService> = mock<BddService>();
+  const mockInversify: MockProxy<any> = mock<any>();
+  const mockBddService: MockProxy<BddServiceBase> = mock<BddServiceBase>();
 
   mockInversify.bddService = mockBddService;
 

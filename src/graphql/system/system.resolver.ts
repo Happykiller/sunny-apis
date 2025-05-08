@@ -26,6 +26,6 @@ export class SystemResolver {
   @UseGuards(makeAuthGuard('graphql', [USER_ROLE.ADMIN]))
   @Query(() => SendMailSystemResolverModel)
   async test_mail(): Promise<SendMailSystemResolverModel> {
-    return await this.inversify.morgansServce.sendTest('fabrice.rosito@gmail.com');
+    return await this.inversify.morgansService.sendTest('fabrice.rosito@gmail.com');
   }
 }

@@ -1,24 +1,27 @@
+// src\usecases\user\create.user.usecase.spec.ts
 import { describe, expect, it } from '@jest/globals';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 import { ERRORS } from '@src/common/ERROR';
-import { BddService } from '@service/db/db.service';
-import { Inversify } from '@src/inversify/investify';
-import { USER_ROLE } from '@presentation/guard/userRole';
-import { userRopo } from '@service/db/fake/mock/user.ropo';
-import { CryptService } from '@service/crypt/crypt.service';
-import { GetUserUsecase } from '@usecase/user/get.user.usecase';
-import { CreateUserUsecase } from '@usecase/user/create.user.usecase';
+import { USER_ROLE } from '@graphql/guard/userRole';
+import { userRopo } from '@services/db/fake/mock/user.ropo';
+import { CryptService } from '@services/crypt/crypt.service';
+import { BddServiceBase } from '@services/db/db.service.base';
+import { GetUserUsecase } from '@usecases/user/get.user.usecase';
+import { CreateUserUsecase } from '@usecases/user/create.user.usecase';
+import { MorgansService } from '@src/services/morgans/morgans.service';
 
 describe('CreateUserUsecase', () => {
-  const mockInversify: MockProxy<Inversify> = mock<Inversify>();
-  const mockBddService: MockProxy<BddService> = mock<BddService>();
+  const mockInversify: MockProxy<any> = mock<any>();
   const mockCryptService: MockProxy<CryptService> = mock<CryptService>();
+  const mockBddService: MockProxy<BddServiceBase> = mock<BddServiceBase>();
+  const mockMorgansService: MockProxy<MorgansService> = mock<MorgansService>();
   const mockGetUserUsecase: MockProxy<GetUserUsecase> = mock<GetUserUsecase>();
 
   mockInversify.bddService = mockBddService;
   mockInversify.cryptService = mockCryptService;
   mockInversify.getUserUsecase = mockGetUserUsecase;
+  mockInversify.morgansService = mockMorgansService;
 
   const usecase: CreateUserUsecase = new CreateUserUsecase(mockInversify);
 

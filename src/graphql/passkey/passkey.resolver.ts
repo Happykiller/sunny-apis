@@ -7,14 +7,21 @@ import { makeAuthGuard } from '../guard/auth.guard.factory';
 import { CurrentSession } from '../guard/userSession.decorator';
 import { PasskeyResolverModel } from './model/passkey.resolver.model';
 import { DeletePasskeyResolverDto } from './dto/delete.passkey.resolver.dto';
+import { DeletePasskeyUsecase } from '@usecases/passkey/delete.passkey.usecase';
+import { CreatePasskeyUsecase } from '@usecases/passkey/create.passkey.usecase';
 import { CreatePasskeyResolverDto } from './dto/passkey.register.auth.resolver.dto';
 import { UserSessionResolverModel } from '../auth/model/user.session.resolver.model';
+import { GetByUserIdPasskeyUsecase } from '@usecases/passkey/getByUserId.passkey.usecase';
 
 @Resolver('PasskeyResolver')
 export class PasskeyResolver {
   constructor(
     @Inject('Inversify')
-    private inversify: any,
+    private inversify: {
+      createPasskeyUsecase: CreatePasskeyUsecase
+      deletePasskeyUsecase: DeletePasskeyUsecase
+      getByUserIdPasskeyUsecase: GetByUserIdPasskeyUsecase
+    },
   ) {}
 
   @UseGuards(makeAuthGuard('graphql', [USER_ROLE.ALL]))

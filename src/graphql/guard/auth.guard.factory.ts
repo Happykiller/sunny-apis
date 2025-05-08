@@ -1,13 +1,17 @@
 // src\graphql\guard\auth.guard.factory.ts
-import { CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import * as jwt from 'jsonwebtoken';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 
 import { USER_ROLE } from './userRole';
 import { UserSession } from '../auth/jwt.strategy';
+import { GetUserUsecase } from '@usecases/user/get.user.usecase';
 import { UserResolverModel } from '../auth/model/user.resolver.model';
+import { UserUsecaseModel } from '@usecases/user/model/user.usecase.model';
 
-let inversify: any;
+let inversify: {
+  getUserUsecase: GetUserUsecase
+};
 let appConfig: any;
 
 export function configureAuthGuardFactory(opts: {
@@ -67,14 +71,18 @@ function extractRequestResponse(context: ExecutionContext, type: 'http' | 'graph
 }
 
 function extractToken(req: any, type: 'http' | 'graphql'): string | null {
-  const header = req.headers?.authorization;
-  if (typeof header === 'string' && header.startsWith('Bearer ')) {
-    return header.slice(7);
+  try {
+    const header = req.headers?.authorization;
+    if (typeof header === 'string' && header.startsWith('Bearer ')) {
+      return header.slice(7);
+    }
+    if (type === 'http' && typeof req.query?.token === 'string') {
+      return req.query.token;
+    }
+    return null;
+  } catch {
+    throw new UnauthorizedException('Token extractToken fail');
   }
-  if (type === 'http' && typeof req.query?.token === 'string') {
-    return req.query.token;
-  }
-  return null;
 }
 
 function verifyJwt(token: string, secret: string): UserSession {
@@ -86,7 +94,7 @@ function verifyJwt(token: string, secret: string): UserSession {
 }
 
 async function findActiveUser(userId: string): Promise<UserResolverModel> {
-  const user = await inversify.getUserUsecase.execute({ id: userId });
+  const user: UserUsecaseModel = await inversify.getUserUsecase.execute({ id: userId });
   if (!user) throw new UnauthorizedException('User is not set');
   if (!user.active) throw new UnauthorizedException('User is deactivated');
   return user;
