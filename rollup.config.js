@@ -27,11 +27,7 @@ module.exports = {
     commonjs(),
     typescript({
       tsconfig: './tsconfig.json',
-      tsconfigOverride: {
-        compilerOptions: {
-          moduleResolution: 'node',
-        },
-      },
+      useTsconfigDeclarationDir: true
     }),
   ],
 };

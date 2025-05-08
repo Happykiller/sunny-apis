@@ -1,0 +1,67 @@
+###
+POST {{host}}/graphql
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  users {
+    id
+    code
+    name_first
+    name_last
+    description
+    mail
+    role
+  }
+}
+
+###
+POST {{host}}/graphql
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  user (
+    dto: {
+      id: "65d615385688080e0a0f0ec2"
+      #code: "faro"
+    }
+  ) {
+    id
+    code
+    name_first
+    name_last
+    description
+    mail
+    role
+  }
+}
+
+###
+POST {{host}}/graphql
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  create_user (
+    dto: {
+      code: "l.rech"
+      password: "Lydie!"
+      name_first: "Lydie"
+      name_last: "Rech"
+      description: "The best dev of the w..delevery"
+      mail: "l.rech@thomyris.com"
+    }
+  ) {
+    id
+    code
+    name_first
+    name_last
+    description
+    mail
+    role
+  }
+}

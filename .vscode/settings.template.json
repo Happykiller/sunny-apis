@@ -1,0 +1,11 @@
+{
+  "rest-client.environmentVariables": {
+    "local": {
+      "host": "http://localhost:3000",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiYWRtaW4iLCJpZCI6IjY2YjBiOGFkM2FjYmExMTdiMjdjNjA3YyIsImlhdCI6MTcyNDE1NDY0MywiZXhwIjoxNzI0MTgzNDQzfQ.6tvUyipNgeHfmaWdBwa2hRd2Q5Lb0Glmzd4koZU4b00",
+      "id": "66b0b8ad3acba117b27c607c",
+      "login": "ropo",
+      "password": "password"
+    }
+  }
+}

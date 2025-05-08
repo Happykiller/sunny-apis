@@ -1,0 +1,11 @@
+###
+POST {{host}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer {{token}}
+
+query {  
+  ping {
+    message
+  }
+}

@@ -4,13 +4,14 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Inject, UnauthorizedException, UseGuards } from '@nestjs/common';
 
 import { UserSession } from './jwt.strategy';
-import { GqlAuthGuard } from '../guard/gql.auth.guard';
 import { CurrentSession } from '../guard/userSession.decorator';
 import { AuthModelResolver } from './model/auth.resolver.model';
 import { AuthAuthResolverDto } from './dto/auth.auth.resolver.dto';
 import { PasskeyAuthResolverDto } from './dto/passkey.auth.resolver.dto';
 import { UserSessionResolverModel } from './model/user.session.resolver.model';
 import { UpdPasswordAuthResolverDto } from './dto/updPassword.auth.resolver.dto';
+import { makeAuthGuard } from '../guard/auth.guard.factory';
+import { USER_ROLE } from '../guard/userRole';
 
 @Resolver('AuthResolver')
 export class AuthResolver {
@@ -68,7 +69,7 @@ export class AuthResolver {
     };
   }
 
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(makeAuthGuard('graphql', [USER_ROLE.USER, USER_ROLE.ADMIN]))
   @Query(
     /* istanbul ignore next */
     (): typeof AuthModelResolver => AuthModelResolver,
@@ -96,7 +97,7 @@ export class AuthResolver {
     };
   }
 
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(makeAuthGuard('graphql', [USER_ROLE.USER, USER_ROLE.ADMIN]))
   @Mutation(
     /* istanbul ignore next */
     (): typeof AuthModelResolver => AuthModelResolver,
