@@ -16,7 +16,7 @@ export class CryptServiceReal implements CryptService {
       throw Error(ERRORS.CRYPT_SERVICE_APP_NAME_WRONG);
     }
 
-    if (!dto.secret && this.config.jwt.secret) {
+    if (!dto.secret && !this.config.jwt.secret) {
       throw Error(ERRORS.CRYPT_SERVICE_SECRET_WRONG);
     }
 
