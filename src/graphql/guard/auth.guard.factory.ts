@@ -23,12 +23,12 @@ export function configureAuthGuardFactory(opts: {
 }
 
 export function makeAuthGuard(
-  mode: 'http' | 'graphql',
+  mode: 'http' | 'graphql' | 'ws',
   requiredRoles?: USER_ROLE[],
 ): CanActivate {
   return {
     canActivate: async (context: ExecutionContext): Promise<boolean> => {
-      const { req, res } = extractRequestResponse(context, mode);
+      const { req, res, ctx } = extractRequestResponse(context, mode);
       const token = extractToken(req, mode);
       if (!token) throw new UnauthorizedException('Access token is not set');
 
@@ -40,6 +40,7 @@ export function makeAuthGuard(
         code: user.code,
         role: user.role,
       } satisfies UserSession;
+      if (ctx) ctx.session = req.user;
 
       const refreshToken = createRefreshToken(userSession);
       res?.setHeader?.(appConfig.jwt.refreshTokenName, refreshToken);
@@ -61,16 +62,34 @@ export function makeAuthGuard(
 
 /* ------------------- Private helpers ------------------- */
 
-function extractRequestResponse(context: ExecutionContext, type: 'http' | 'graphql') {
+function extractRequestResponse(context: ExecutionContext, type: 'http' | 'graphql' | 'ws') {
   if (type === 'graphql') {
     const gqlCtx = GqlExecutionContext.create(context).getContext();
-    return { req: gqlCtx.req, res: gqlCtx.res };
+    return { req: gqlCtx.req, res: gqlCtx.res, ctx: gqlCtx };
   }
+
+  if (type === 'ws') {
+    const gqlCtx = GqlExecutionContext.create(context).getContext();
+    const connectionParams = gqlCtx?.req?.connectionParams || gqlCtx?.connection?.context || {};
+    const authorization = connectionParams['Authorization'] || connectionParams['authorization'];
+
+    const req:any = {
+      headers: {},
+      user: {},
+    };
+
+    if (authorization) {
+      req.headers.authorization = authorization;
+    }
+
+    return { req, res: null, ctx: gqlCtx };
+  }
+
   const httpCtx = context.switchToHttp();
-  return { req: httpCtx.getRequest(), res: httpCtx.getResponse() };
+  return { req: httpCtx.getRequest(), res: httpCtx.getResponse(), ctx: null };
 }
 
-function extractToken(req: any, type: 'http' | 'graphql'): string | null {
+function extractToken(req: any, type: 'http' | 'graphql' | 'ws'): string | null {
   try {
     const header = req.headers?.authorization;
     if (typeof header === 'string' && header.startsWith('Bearer ')) {
