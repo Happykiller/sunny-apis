@@ -26,6 +26,10 @@ export class ConfigurationBase {
   morgans?: {
     url?: string;
   };
+  puppet?: {
+    url?: string,
+    token?: string
+  };
   throttle: Array<{
     ttl: number;
     limit: number;

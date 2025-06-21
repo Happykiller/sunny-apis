@@ -7,9 +7,12 @@ import { CreateUserUsecaseDto } from './dto/create.user.usecase.dto';
 export class CreateUserUsecase {
   inversify: any;
 
-  constructor(inversify: any) {
+  constructor(inversify: any, private readonly config:any) {
     this.inversify = inversify;
   }
+
+  capitalizeFirstLetter = (text: string): string => 
+    text.charAt(0).toUpperCase() + text.slice(1);
 
   async execute(dto: CreateUserUsecaseDto): Promise<UserUsecaseModel> {
     let user: UserDbModel;
@@ -25,14 +28,14 @@ export class CreateUserUsecase {
 
     this.inversify.morgansService.sendWelcome({
       to: dto.mail,
-      subject: 'Bienvenue sur Vergo 🎉',
+      subject: `Bienvenue sur ${this.capitalizeFirstLetter(this.config.app_name)} 🎉`,
       variables: {
         "id": dto.code,
         "email": dto.mail,
         "password": dto.password,
-        "logoUrl": "https://vergo.happykiller.net/favicon-192x192.png",
-        "serviceUrl": "https://vergo.happykiller.net/",
-        "serviceName": "Vergo",
+        "logoUrl": `https://${this.config.app_name}.happykiller.net/favicon-192x192.png`,
+        "serviceUrl": `https://${this.config.app_name}.happykiller.net/`,
+        "serviceName": this.capitalizeFirstLetter(this.config.app_name),
         "siguriUrl": "https://siguri.happykiller.net/"
       }
     });
