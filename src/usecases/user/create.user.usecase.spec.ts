@@ -23,7 +23,9 @@ describe('CreateUserUsecase', () => {
   mockInversify.getUserUsecase = mockGetUserUsecase;
   mockInversify.morgansService = mockMorgansService;
 
-  const usecase: CreateUserUsecase = new CreateUserUsecase(mockInversify);
+  const usecase: CreateUserUsecase = new CreateUserUsecase(mockInversify, {
+    app_name: 'test'
+  } as any);
 
   describe('#execute', () => {
     it('should build', () => {

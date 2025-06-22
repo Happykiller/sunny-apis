@@ -11,7 +11,7 @@ import { CurrentSession } from '../guard/userSession.decorator';
 @Resolver(() => PingResponse)
 export class TestResolver {
   constructor() {
-    console.log('✅ TestResolver loaded');
+    // Resolver instantiated. Useful for debugging loader issues.
   }
 
   @UseGuards(makeAuthGuard('graphql', [USER_ROLE.ADMIN]))
@@ -19,7 +19,7 @@ export class TestResolver {
   async ping(
     @CurrentSession() session: UserSession
   ): Promise<PingResponse> {
-    console.log('✅ TestResolver#ping => trigger', session);
+    // Simple ping to verify authentication wiring
     return { message: 'pong' };
   }
 }

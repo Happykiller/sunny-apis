@@ -17,7 +17,7 @@ export class HttpServiceReal implements HttpService {
       body: body ? JSON.stringify(body) : undefined,
     };
 
-    // Utilisation de fetch directement
+    // Directly use fetch to perform the HTTP request
     const response = await fetch(url, options);
 
     if (!response.ok) {

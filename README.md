@@ -1285,6 +1285,10 @@ We welcome contributions to improve Sunny APIs! If you have enhancements or bug 
 
 If you’re using Sunny APIs in your organization and have specialized needs, consider contributing those back so everyone can benefit! We appreciate community input to make the project better.
 
+## AI Usage Guide
+
+A short reference aimed at AI assistants is provided in [docs/ai.md](docs/ai.md). It lists the key GraphQL operations and typical workflows so automation tools can interact with Sunny APIs effectively.
+
 ## License
 
 Sunny APIs is open-source software licensed under the **MIT License**. See the `LICENSE` file in the repository for the full text.
