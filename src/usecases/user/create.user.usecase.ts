@@ -3,12 +3,13 @@ import { ERRORS } from '../../common/ERROR';
 import { UserUsecaseModel } from './model/user.usecase.model';
 import { UserDbModel } from '../../services/db/model/user.db.model';
 import { CreateUserUsecaseDto } from './dto/create.user.usecase.dto';
+import type { ConfigurationBase } from '../../config/configurationBase';
 import type { InversifyInterface } from '../../types/inversify.interface';
 
 export class CreateUserUsecase {
   inversify: InversifyInterface;
 
-  constructor(inversify: InversifyInterface, private readonly config: any) {
+  constructor(inversify: InversifyInterface, private readonly config: ConfigurationBase) {
     this.inversify = inversify;
   }
 
