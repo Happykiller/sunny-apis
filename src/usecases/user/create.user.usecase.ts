@@ -24,7 +24,9 @@ export class CreateUserUsecase {
           code: dto.code,
         });
       } catch (e) {
-        throw new Error(ERRORS.CREATE_USER_USECASE_FETCH_USER);
+        if (e.message !== ERRORS.GET_USER_USECASE_USER_NOT_FOUND) {
+          throw new Error(ERRORS.CREATE_USER_USECASE_FETCH_USER);
+        }
       }
 
       if (user) {

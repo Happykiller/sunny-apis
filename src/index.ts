@@ -77,6 +77,8 @@ export * from './services/encode/encode.service';
 export * from './services/encode/encode.service.real';
 export * from './services/http/http.service';
 export * from './services/http/http.service.real';
+export * from './services/jwt/jwt.service';
+export * from './services/jwt/jwt.service.real';
 export * from './services/logger/logger.service';
 export * from './services/logger/logger.service.fake';
 export * from './services/morgans/dto/send.morgans.service.dto';
