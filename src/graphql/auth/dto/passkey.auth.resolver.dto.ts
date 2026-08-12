@@ -30,8 +30,17 @@ export class PasskeyAuthAuthenticationResolverDto {
 
 @InputType()
 export class PasskeyAuthResolverDto {
-  @Field(() => String)
-  user_code: string;
+  /**
+   * Facultatif depuis la reprise du protocole : c'est la credential présentée
+   * qui désigne le compte. Un navigateur qui n'a jamais servi à s'enregistrer
+   * — le cas d'une passkey synchronisée ouverte sur un autre poste — ne
+   * connaît aucun `user_code` et doit pouvoir se connecter quand même.
+   *
+   * Conservé plutôt que supprimé : les clients déjà déployés continuent de
+   * l'envoyer, et quand il est là il est vérifié contre la credential.
+   */
+  @Field(() => String, { nullable: true })
+  user_code?: string;
   @Field(() => PasskeyAuthAuthenticationResolverDto)
   authentication: AuthenticationJSON;
 }

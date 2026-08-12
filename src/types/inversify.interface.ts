@@ -7,6 +7,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import type { HttpService } from '../services/http/http.service';
 import type { CryptService } from '../services/crypt/crypt.service';
 import type { MorgansService } from '../services/morgans/morgans.service';
+import type { ChallengeService } from '../services/challenge/challenge.service';
 import type { PasswordLessService } from '../services/passwordless/passwordless.service';
 
 // Usecases - Auth
@@ -15,6 +16,8 @@ import { AuthPasskeyUsecase } from '../usecases/auth/passkey.auth.usecase';
 import { DeletePasskeyUsecase } from '../usecases/passkey/delete.passkey.usecase';
 import { CreatePasskeyUsecase } from '../usecases/passkey/create.passkey.usecase';
 import { GetByUserIdPasskeyUsecase } from '../usecases/passkey/getByUserId.passkey.usecase';
+import { OptionsAuthPasskeyUsecase } from '../usecases/passkey/options.auth.passkey.usecase';
+import { OptionsRegisterPasskeyUsecase } from '../usecases/passkey/options.register.passkey.usecase';
 
 // Usecases - User
 import type { GetUserUsecase } from '../usecases/user/get.user.usecase';
@@ -34,6 +37,10 @@ export interface InversifyInterface {
   cryptService?: CryptService;
   morgansService?: MorgansService;
   passwordLessService?: PasswordLessService;
+  // Optionnel : les usecases retombent sur ChallengeServiceMemory quand le
+  // projet consommateur ne le câble pas, pour qu'un correctif de sécurité
+  // n'impose pas une modification à chacun d'eux.
+  challengeService?: ChallengeService;
 
   // Usecases - Auth
   authUsecase?: AuthUsecase;
@@ -41,6 +48,8 @@ export interface InversifyInterface {
   deletePasskeyUsecase?: DeletePasskeyUsecase;
   createPasskeyUsecase?: CreatePasskeyUsecase;
   getByUserIdPasskeyUsecase?: GetByUserIdPasskeyUsecase;
+  optionsAuthPasskeyUsecase?: OptionsAuthPasskeyUsecase;
+  optionsRegisterPasskeyUsecase?: OptionsRegisterPasskeyUsecase;
 
   // Usecases - Users
   createUserUsecase?: CreateUserUsecase;

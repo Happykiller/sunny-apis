@@ -12,6 +12,12 @@ import { CreatePasskeyUsecase } from '@usecases/passkey/create.passkey.usecase';
 import { CreatePasskeyResolverDto } from './dto/passkey.register.auth.resolver.dto';
 import { UserSessionResolverModel } from '../auth/model/user.session.resolver.model';
 import { GetByUserIdPasskeyUsecase } from '@usecases/passkey/getByUserId.passkey.usecase';
+import { OptionsAuthPasskeyUsecase } from '@usecases/passkey/options.auth.passkey.usecase';
+import { OptionsRegisterPasskeyUsecase } from '@usecases/passkey/options.register.passkey.usecase';
+import {
+  PasskeyAuthOptionsResolverModel,
+  PasskeyRegisterOptionsResolverModel,
+} from './model/passkey.options.resolver.model';
 
 @Resolver('PasskeyResolver')
 export class PasskeyResolver {
@@ -21,8 +27,39 @@ export class PasskeyResolver {
       createPasskeyUsecase: CreatePasskeyUsecase
       deletePasskeyUsecase: DeletePasskeyUsecase
       getByUserIdPasskeyUsecase: GetByUserIdPasskeyUsecase
+      optionsAuthPasskeyUsecase: OptionsAuthPasskeyUsecase
+      optionsRegisterPasskeyUsecase: OptionsRegisterPasskeyUsecase
     },
   ) {}
+
+  /**
+   * Amorce une authentification. **Sans garde, et c'est tout le point** : on ne
+   * peut pas exiger d'être authentifié pour obtenir de quoi s'authentifier. Sa
+   * réponse ne porte donc rien qui permettrait d'énumérer les comptes.
+   */
+  @Query(
+    /* istanbul ignore next */
+    (): typeof PasskeyAuthOptionsResolverModel =>
+      PasskeyAuthOptionsResolverModel,
+  )
+  async passkey_auth_options(): Promise<PasskeyAuthOptionsResolverModel> {
+    return this.inversify.optionsAuthPasskeyUsecase.execute();
+  }
+
+  /** Amorce un enregistrement, pour la session en cours. */
+  @UseGuards(makeAuthGuard('graphql', [USER_ROLE.ALL]))
+  @Query(
+    /* istanbul ignore next */
+    (): typeof PasskeyRegisterOptionsResolverModel =>
+      PasskeyRegisterOptionsResolverModel,
+  )
+  async passkey_register_options(
+    @CurrentSession() session: UserSessionResolverModel,
+  ): Promise<PasskeyRegisterOptionsResolverModel> {
+    return this.inversify.optionsRegisterPasskeyUsecase.execute({
+      user_id: session.id,
+    });
+  }
 
   @UseGuards(makeAuthGuard('graphql', [USER_ROLE.ALL]))
   @Mutation(
@@ -44,8 +81,9 @@ export class PasskeyResolver {
       user_id: response.user_id,
       hostname: response.hostname,
       user_code: response.user_code,
-      challenge: response.challenge,
       credential_id: response.registration.id,
+      authenticator_name: response.registrationParsed?.authenticator?.name,
+      synced: response.registrationParsed?.synced,
     };
   }
 
@@ -65,8 +103,11 @@ export class PasskeyResolver {
         user_id: passkey.user_id,
         hostname: passkey.hostname,
         user_code: passkey.user_code,
-        challenge: passkey.challenge,
         credential_id: passkey.registration.id,
+        // Le fournisseur et l'état de sauvegarde dormaient déjà dans
+        // `registration_parsed` : les exposer ne coûte ni colonne ni migration.
+        authenticator_name: passkey.registrationParsed?.authenticator?.name,
+        synced: passkey.registrationParsed?.synced,
       };
     });
   }

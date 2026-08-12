@@ -30,6 +30,18 @@ class RegisterUserPasskeyResolverDto {
 
   @Field(() => String)
   id: string;
+
+  /**
+   * Le nom lisible que l'authentificateur affiche à l'utilisateur.
+   *
+   * Il n'apparaissait pas ici tant que le client passait une simple chaîne en
+   * guise d'utilisateur : la bibliothèque en faisait alors un `{ id, name }`
+   * et rien de plus. Depuis que le serveur fournit un `id` stable, l'objet
+   * complet revient dans la réponse — et un champ non déclaré fait rejeter
+   * toute la requête par GraphQL, avant même d'atteindre le usecase.
+   */
+  @Field(() => String, { nullable: true })
+  displayName?: string;
 }
 
 @InputType()
