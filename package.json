@@ -1,6 +1,6 @@
 {
   "name": "@happykiller/sunny-apis",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Library front",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
