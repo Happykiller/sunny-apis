@@ -33,8 +33,13 @@ export class CreateUserUsecase {
         throw new Error(ERRORS.CREATE_USER_USECASE_USER_ALREADY_EXIST);
       }
 
+      // L'envoi est volontairement non attendu : le mail ne doit pas retarder la
+      // création du compte. Mais un `try/catch` ne rattrape que les jets
+      // synchrones — le rejet d'une promesse non attendue remontait en
+      // `unhandledRejection`, et Node tue le process. Un service de mail
+      // injoignable suffisait donc à faire tomber l'API sur une création.
       try {
-        this.inversify.morgansService.sendWelcome({
+        const envoi: any = this.inversify.morgansService.sendWelcome({
           to: dto.mail,
           subject: `Bienvenue sur ${this.capitalizeFirstLetter(this.config.app_name)} 🎉`,
           variables: {
@@ -47,6 +52,11 @@ export class CreateUserUsecase {
             "siguriUrl": "https://siguri.happykiller.net/"
           }
         });
+        Promise.resolve(envoi).catch((e) =>
+          this.inversify.loggerService.error(
+            `Error while send mail => ${e.message}`,
+          ),
+        );
       } catch (e) {
         this.inversify.loggerService.error(`Error while send mail => ${e.message}`);
       }
