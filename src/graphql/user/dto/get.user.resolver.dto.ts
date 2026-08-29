@@ -7,4 +7,10 @@ export class GetUserResolverDto {
   id?: string;
   @Field(() => String, { nullable: true })
   code?: string;
+  @Field(() => Boolean, {
+    nullable: true,
+    description:
+      'Also match deactivated accounts. Needed to read, or reactivate, a revoked user.',
+  })
+  include_inactive?: boolean;
 }

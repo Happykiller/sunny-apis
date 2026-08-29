@@ -5,6 +5,7 @@ import { UserDbModel } from '../model/user.db.model';
 import { GetUserDbDto } from '../dto/get.user.db.dto';
 import { USER_ROLE } from '../../../graphql/guard/userRole';
 import { CreateUserDbDto } from '../dto/create.user.db.dto';
+import { GetAllUserDbDto } from '../dto/get_all.user.db.dto';
 import { UpdateUserDbDto } from '../dto/update.user.db.dto';
 
 export class BddServiceUserMongo {
@@ -14,11 +15,11 @@ export class BddServiceUserMongo {
     return this.inversify.mongo.collection('users');
   }
 
-  async getAllUser(): Promise<UserDbModel[]> {
-    // Query for a movie that has the title 'The Room'
-    const query = {
-      active: true,
-    };
+  async getAllUser(dto?: GetAllUserDbDto): Promise<UserDbModel[]> {
+    // Par défaut on ne rend que les comptes actifs — c'est le contrat
+    // historique. `include_inactive` est ce qui rend un compte coupé de nouveau
+    // visible, donc réactivable : sans lui, le désactiver revient à le perdre.
+    const query: any = dto?.include_inactive ? {} : { active: true };
     const options = {};
     // Execute query
     const results = (await this.getUserCollection()).find(query, options);
@@ -40,10 +41,15 @@ export class BddServiceUserMongo {
 
   async getUser(dto: GetUserDbDto): Promise<UserDbModel> {
     try {
-      const query = {
-        active: true,
+      const query: any = {
         $or: [{ _id: new ObjectId(dto.id) }, { code: dto.code }],
       };
+      // Les résolveurs d'auteur (coffres, entrées) lisent des comptes qui
+      // peuvent avoir été désactivés depuis. Filtrer ici ferait échouer la
+      // lecture d'un coffre pour tous ses membres.
+      if (!dto.include_inactive) {
+        query.active = true;
+      }
       const options = {};
       // Execute query
       const doc: any = await (
@@ -110,6 +116,16 @@ export class BddServiceUserMongo {
       set.mail = dto.mail;
     }
 
+    if (dto.role !== undefined) {
+      set.role = dto.role;
+    }
+
+    // `!== undefined` et non un test de vérité : `active: false` est justement
+    // la valeur qui compte, et un `if (dto.active)` l'ignorerait en silence.
+    if (dto.active !== undefined) {
+      set.active = dto.active;
+    }
+
     await (
       await this.getUserCollection()
     ).updateOne(
@@ -119,8 +135,10 @@ export class BddServiceUserMongo {
       },
     );
 
+    // include_inactive : sinon une désactivation réussie rendrait `null`.
     return await this.getUser({
       id: dto.user_id,
+      include_inactive: true,
     });
   }
 }

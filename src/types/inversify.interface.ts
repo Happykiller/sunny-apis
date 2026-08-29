@@ -23,6 +23,7 @@ import { OptionsRegisterPasskeyUsecase } from '../usecases/passkey/options.regis
 import type { GetUserUsecase } from '../usecases/user/get.user.usecase';
 import { UpdPasswordUsecase } from '../usecases/user/updPassword.usecase';
 import type { CreateUserUsecase } from '../usecases/user/create.user.usecase';
+import type { UpdateUserUsecase } from '../usecases/user/update.user.usecase';
 import type { GetAllUserUsecase } from '../usecases/user/get_all.user.usecase';
 
 
@@ -53,6 +54,7 @@ export interface InversifyInterface {
 
   // Usecases - Users
   createUserUsecase?: CreateUserUsecase;
+  updateUserUsecase?: UpdateUserUsecase;
   getUserUsecase?: GetUserUsecase;
   getAllUserUsecase?: GetAllUserUsecase;
   updPasswordUsecase?: UpdPasswordUsecase;

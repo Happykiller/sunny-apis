@@ -17,4 +17,6 @@ export class UserModelResolver {
   mail: string;
   @Field(() => String, { nullable: true })
   role: string;
+  @Field(() => Boolean, { nullable: true })
+  active: boolean;
 }

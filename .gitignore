@@ -3,3 +3,5 @@ node_modules/
 dist/
 *.tgz
 coverage/
+# Cache incrémental de tsc (produit par `tsc --noEmit`, pas un artefact de build)
+*.tsbuildinfo

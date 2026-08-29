@@ -59,6 +59,12 @@ export class CreateUserUsecase {
 
       return user;
     } catch (e) {
+      // Le fourre-tout écrasait les erreurs déjà qualifiées : un code déjà pris
+      // remontait en `CREATE_USER_USECASE`, indistinguable d'une panne. Le test
+      // « should already exist » l'attendait depuis le début.
+      if (Object.values(ERRORS).includes(e?.message)) {
+        throw e;
+      }
       throw new Error(ERRORS.CREATE_USER_USECASE);
     }
   }

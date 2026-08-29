@@ -21,7 +21,10 @@ const declared = new Set([
   ...Object.keys(pkg.peerDependencies || {}),
 ]);
 
-const missing = [...usedNestDeps].filter(dep => !declared.has(dep.split('/')[0]));
+// `dep.split('/')[0]` rendait '@nestjs', qui n'est jamais une clé de
+// package.json : le contrôle échouait donc systématiquement, quel que soit
+// l'état réel des peerDependencies. On compare le nom complet.
+const missing = [...usedNestDeps].filter(dep => !declared.has(dep));
 
 if (missing.length > 0) {
   console.error('\n❌ Missing peerDependencies in package.json:');

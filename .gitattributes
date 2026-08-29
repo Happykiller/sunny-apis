@@ -1,0 +1,4 @@
+# Les fins de ligne sont normalisées en LF dans le dépôt. Sans cela, un clone
+# monté depuis Windows fait apparaître l'intégralité des fichiers comme modifiés
+# — 140 fichiers pour zéro changement de contenu — et masque le travail réel.
+* text=auto eol=lf

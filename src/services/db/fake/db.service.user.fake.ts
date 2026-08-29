@@ -6,6 +6,7 @@ import { UserDbModel } from '../model/user.db.model';
 import { GetUserDbDto } from '../dto/get.user.db.dto';
 import { USER_ROLE } from '../../../graphql/guard/userRole';
 import { CreateUserDbDto } from '../dto/create.user.db.dto';
+import { GetAllUserDbDto } from '../dto/get_all.user.db.dto';
 import { UpdateUserDbDto } from '../dto/update.user.db.dto';
 
 export class BddServiceUserFake {
@@ -29,25 +30,31 @@ export class BddServiceUserFake {
     return Promise.resolve(entity);
   }
 
-  getAllUser(): Promise<UserDbModel[]> {
-    return Promise.resolve(this.getUserCollection());
+  getAllUser(dto?: GetAllUserDbDto): Promise<UserDbModel[]> {
+    const users = this.getUserCollection();
+    return Promise.resolve(
+      dto?.include_inactive ? users : users.filter((elt) => elt.active),
+    );
   }
 
   getUser(dto: GetUserDbDto): Promise<UserDbModel> {
+    const actif = (elt: UserDbModel) => dto.include_inactive || elt.active;
     return Promise.resolve(
       this.getUserCollection().find((elt) => {
         if (dto.id) {
-          return elt.id === dto.id && elt.active;
+          return elt.id === dto.id && actif(elt);
         } else if (dto.code) {
-          return elt.code === dto.code && elt.active;
+          return elt.code === dto.code && actif(elt);
         }
       }),
     );
   }
 
   async updateUser(dto: UpdateUserDbDto): Promise<UserDbModel> {
+    // include_inactive : on doit pouvoir réactiver un compte déjà coupé.
     const user = await this.getUser({
       id: dto.user_id,
+      include_inactive: true,
     });
 
     if (dto.password) {
@@ -72,6 +79,15 @@ export class BddServiceUserFake {
 
     if (dto.mail) {
       user.mail = dto.mail;
+    }
+
+    if (dto.role !== undefined) {
+      user.role = dto.role;
+    }
+
+    // `!== undefined` : `active: false` est la valeur qui compte.
+    if (dto.active !== undefined) {
+      user.active = dto.active;
     }
 
     return Promise.resolve(JSON.parse(JSON.stringify(user)));
